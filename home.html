@@ -11,6 +11,19 @@
 <body>
     <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <button class="accordion">I/O</button>
+        <div class="panel">
+            <div class="side-panel-grid-container">
+                <div class="side-panel-grid-item" draggable="true" ondragstart="onDragStart(event);" id="Port" >
+                    <img src="https://img.icons8.com/color/96/000000/network-card.png"/ alt="nic" width="50px" draggable="false">
+                    <div style="padding: 10px;">Port</div>
+                </div>
+                <div class="side-panel-grid-item" draggable="true" ondragstart="onDragStart(event);" id="Queue" >
+                    <img src="https://img.icons8.com/color/96/000000/database.png"/ alt="queue" width="50px" draggable="false">
+                    <div style="padding: 10px;">Queue</div>
+                </div>
+            </div>
+        </div>
         <button class="accordion">DPDK Apps</button>
         <div class="panel">
             <div class="side-panel-grid-container">
@@ -18,8 +31,8 @@
                     <img src="/images/dpdk_logo.svg" alt="dpdk" width="50px" draggable="false">
                     <div style="padding: 10px;">DPDK L2FWD</div>
                 </div>
-                <div class="side-panel-grid-item" id="l3fwd">
-                    <img src="/images/dpdk_logo.svg" alt="dpdk" width="50px">
+                <div class="side-panel-grid-item" draggable="true" ondragstart="onDragStart(event);" id="l3fwd" >
+                    <img src="/images/dpdk_logo.svg" alt="dpdk" width="50px" draggable="false">
                     <div style="padding: 10px;">DPDK L3FWD</div>
                 </div>
                 <div class="side-panel-grid-item">3</div>
@@ -34,12 +47,18 @@
         <button class="accordion">VPP Apps</button>
         <div class="panel">
         </div>
+
+        <a target="_blank" class="side-panel-icon-link" href="https://icons8.com">Icons by Icons8</a>
     </div>
 
     <button class="openbtn" onclick="openNav()">☰</button>
     <div id="cy" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
 
     <script src="/cytoscape/cytoscape.min.js"></script>
+    <script src="/popperjs/core/dist/umd/popper.js"></script>
+    <script src="cytoscape-popper/cytoscape-popper.js"></script>
+    <script src="/lodash/lodash.js"></script>
+    <script src="/cytoscape-edgehandles/cytoscape-edgehandles.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();

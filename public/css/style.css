@@ -10,6 +10,13 @@ body {
     top: 0;
 }
 
+.popper-handle {
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 20px;
+    z-index: 9999;
+  }
 
 /* Sidebar */
 
@@ -29,7 +36,7 @@ body {
 .sidepanel a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 15px;
     color: #818181;
     display: block;
     transition: 0.3s;
@@ -79,4 +86,9 @@ body {
 
 .side-panel-grid-item:hover {
     background-color: rgba(62, 62, 62, 0.8);
+}
+
+.side-panel-icon-link {
+    position: fixed;
+    bottom: 10px;
 }

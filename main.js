@@ -17,6 +17,10 @@ var url = f('mongodb://%s:%s@<mongodb-host>:27017',
 // Static Web Init
 app.use(express.static(__dirname + '/public'));
 app.use('/cytoscape', express.static(__dirname + '/node_modules/cytoscape/dist'));
+app.use('/cytoscape-edgehandles', express.static(__dirname + '/node_modules/cytoscape-edgehandles'));
+app.use('/popperjs', express.static(__dirname + '/node_modules/@popperjs'));
+app.use('/cytoscape-popper', express.static(__dirname + '/node_modules/cytoscape-popper'));
+app.use('/lodash', express.static(__dirname + '/node_modules/lodash'));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/home.html')
 });

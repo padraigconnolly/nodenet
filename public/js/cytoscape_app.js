@@ -12,23 +12,19 @@ var cy = cytoscape({
         }
     ],
 */
-/*    elements: {
+/*   elements: {
         nodes: [
             { data: { id: 'j', name: 'Jerry' } },
             { data: { id: 'e', name: 'Elaine' } },
-            { data: { id: 'k', name: 'Kramer' } },
-            { data: { id: 'g', name: 'George' } }
+            { data: { id: 'k', name: 'Kramer' } }
         ],
         edges: [
             { data: { source: 'j', target: 'e' } },
             { data: { source: 'j', target: 'k' } },
-            { data: { source: 'j', target: 'g' } },
             { data: { source: 'e', target: 'j' } },
             { data: { source: 'e', target: 'k' } },
             { data: { source: 'k', target: 'j' } },
-            { data: { source: 'k', target: 'e' } },
-            { data: { source: 'k', target: 'g' } },
-            { data: { source: 'g', target: 'j' } }
+            { data: { source: 'k', target: 'e' } }
         ]
     },*/
           
@@ -71,7 +67,7 @@ var cy = cytoscape({
       {
         selector: '.eh-hover',
         style: {
-          'background-color': 'red'
+          'background-color': 'blue'
         }
       },
 
@@ -79,7 +75,7 @@ var cy = cytoscape({
         selector: '.eh-source',
         style: {
           'border-width': 2,
-          'border-color': 'red'
+          'border-color': 'black'
         }
       },
 
@@ -87,14 +83,14 @@ var cy = cytoscape({
         selector: '.eh-target',
         style: {
           'border-width': 2,
-          'border-color': 'red'
+          'border-color': 'green'
         }
       },
 
       {
         selector: '.eh-preview, .eh-ghost-edge',
         style: {
-          'background-color': 'red',
+          'background-color': 'green',
           'line-color': 'red',
           'target-arrow-color': 'red',
           'source-arrow-color': 'red'
@@ -119,8 +115,22 @@ var popperNode;
 var popper;
 var popperDiv;
 var started = false;
+var edge;
 
 function start() {
+  eh.start(popperNode);
+}
+
+function startEdge() {
+  if (popper){
+    popper.destroy();
+    popper = null;
+  }
+  if (popperDiv) {
+    document.body.removeChild(popperDiv);
+    popperDiv = null;
+  }
+  cy.remove(edge)
   eh.start(popperNode);
 }
 
@@ -156,6 +166,29 @@ function setHandleOn(node) {
   });
 }
 
+function setHandleOnEdge(node) {
+  if (started) { return; }
+
+  removeHandle(); // rm old handle
+
+  popperNode = node.source();
+  edge = node;
+
+  console.log(node)
+  //console.log(node.midpoint())
+
+  popperDiv = document.createElement('div');
+  popperDiv.classList.add('popper-handle');
+  popperDiv.addEventListener('mousedown', startEdge);
+  document.body.appendChild(popperDiv);
+
+  popper = node.popper({
+    content: popperDiv,
+    popper: {},
+    renderedPosition: () => ({ x: node.renderedTargetEndpoint().x, y: node.renderedTargetEndpoint().y -15}),
+  });
+}
+
 function removeHandle() {
   if (popper){
     popper.destroy();
@@ -174,7 +207,15 @@ cy.on('mouseover', 'node', function(e) {
   setHandleOn(e.target);
 });
 
+cy.on('mouseover', 'edge', function(e) {
+  setHandleOnEdge(e.target);
+});
+
 cy.on('grab', 'node', function(){
+  removeHandle();
+});
+
+cy.on('grab', 'edge', function(){
   removeHandle();
 });
 

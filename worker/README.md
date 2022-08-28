@@ -6,9 +6,11 @@ controller asks it to.
 
 ## Installation
 
-To install:
+First install Go as per the docs here: https://go.dev/doc/install
+
+Then to install nodenet worker:
 ```bash
-go install github.com/padraigconnolly/nodenet/worker/cmd/worker
+go install github.com/padraigconnolly/nodenet/worker/cmd/worker@latest
 ```
 
 ## Running

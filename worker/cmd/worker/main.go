@@ -10,4 +10,5 @@ func main() {
 	fmt.Println("Hello, world.")
 
 	dpdk.Test()
+	dpdk.DPDK()
 }

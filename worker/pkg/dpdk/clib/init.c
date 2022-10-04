@@ -47,5 +47,46 @@ extern void init(){
 extern void DPDK(struct EALParams eal){
     printf("\nmyNum is: %d\n", eal.myNum[1]);
     printf("\nmyLetter is: %s\n", eal.myLetter);
+    printf("\nmyString is: %s\n", eal.myString[1]);
     init();
 }
+
+/*
+
+Sample C Code
+
+#include <stdio.h>
+
+struct EALParams {   // Structure declaration
+  int  *myNum;           // Member (int variable)
+  char *myLetter;
+  char **myString;
+};
+
+int func(struct EALParams eal){
+    printf("\nmyString is: %s\n", eal.myString[1]);
+    return 1;
+}
+
+int main()
+{
+    struct EALParams eal;
+    
+    char *test = "Hi there";
+
+    char *string[2] = {"Hi There33", "Hi There55"};
+    char **ptr = string;
+    
+    int list[3] = {1,5,6};
+    eal.myNum = list;
+    eal.myLetter = test;
+    eal.myString = ptr;
+    
+    printf("%s", eal.myLetter);
+    
+    int ret = func(eal);
+
+    return 0;
+}
+
+*/

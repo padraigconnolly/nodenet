@@ -11,6 +11,7 @@
 struct EALParams {   // Structure declaration
   int *myNum;           // Member (int variable)
   char *myLetter;
+  char **myString;
 };
 
 extern void DPDK(struct EALParams eal);

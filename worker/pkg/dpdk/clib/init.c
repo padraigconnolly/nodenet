@@ -11,16 +11,18 @@ lcore_hello(__rte_unused void *arg)
 }
 
 extern void init(){
-    int argc = 5;
-    char *argv[5];
+    int argc = 7;
+    char *argv[7];
     int ret;
     unsigned lcore_id;
 
     argv[0] = " ";      // This is where the start command should be
-        argv[1] = "-a";
-    argv[2] = "0000:02:00.0";
+    argv[1] = "-a";
+    argv[2] = "0000:01:00.0";
     argv[3] = "-a";
-    argv[4] = "0000:02:00.1";
+    argv[4] = "0000:01:00.1";
+    argv[5] = "-l";
+    argv[6] = "2,3";
 
     ret = rte_eal_init(argc, argv);
     if (ret < 0)
@@ -42,7 +44,8 @@ extern void init(){
 	rte_eal_cleanup();
 }
 
-extern void DPDK(){
-    printf("Hello From C555\n");
+extern void DPDK(struct EALParams eal){
+    printf("\nmyNum is: %d\n", eal.myNum[1]);
+    printf("\nmyLetter is: %s\n", eal.myLetter);
     init();
 }

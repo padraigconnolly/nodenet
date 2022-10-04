@@ -8,14 +8,16 @@ controller asks it to.
 
 First install Go as per the docs here: https://go.dev/doc/install
 
-Then to install nodenet worker:
+Then install DPDK as per the docs here: https://doc.dpdk.org/guides/linux_gsg/build_dpdk.html
+
+Then in `nodenet/worker` run:
 ```bash
-go install github.com/padraigconnolly/nodenet/worker/cmd/worker@latest
+make c go
 ```
 
 ## Running
 
 To run:
 ```bash
-$HOME/go/bin/worker
+./worker
 ```

@@ -19,7 +19,12 @@ func Test() {
 }
 
 func DPDK() error {
-	_, err := C.DPDK() //We ignore first result as it is a void function
+	cs := C.CString("Go string")
+	p := [6]C.int{2, 3, 5, 7, 11, 13}
+	// In Cgo, we need to pass pointer to first element in array i.e &p[0]
+	eal := C.struct_EALParams{myNum: &p[0], myLetter: cs}
+	fmt.Printf("%+v", eal)
+	_, err := C.DPDK(eal) //We ignore first result as it is a void function
 	if err != nil {
 		return errors.New("error calling DPDK function: " + err.Error())
 	}

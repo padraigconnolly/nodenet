@@ -8,6 +8,11 @@
 #include <rte_launch.h>
 #include <rte_ethdev.h>
 
-extern void DPDK();
+struct EALParams {   // Structure declaration
+  int *myNum;           // Member (int variable)
+  char *myLetter;
+};
+
+extern void DPDK(struct EALParams eal);
 
 #endif

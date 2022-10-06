@@ -9,9 +9,14 @@
 #include <rte_ethdev.h>
 
 struct EALParams {   // Structure declaration
-  int *myNum;           // Member (int variable)
-  char *myLetter;
-  char **myString;
+  //int *myNum;           // List of Numbers
+  //char *myLetter;       // String
+  //char **myString;      // List of Strings
+  char **ports;         // List of Ports
+  int numPorts;         // Number of Ports
+  int *cpus;            // List of CPUs
+  int numCpus;          // Number of CPUs
+  int numArgs;          // Number of EAL Arguments
 };
 
 extern void DPDK(struct EALParams eal);

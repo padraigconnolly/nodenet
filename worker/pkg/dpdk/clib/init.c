@@ -10,6 +10,16 @@ lcore_hello(__rte_unused void *arg)
         return 0;
 }
 
+int countDigits( int value )
+{
+    int result = 0;
+    while( value != 0 ) {
+       value /= 10;
+       result++;
+    }
+    return result;
+}
+
 extern void init(){
     int argc = 7;
     char *argv[7];
@@ -44,11 +54,68 @@ extern void init(){
 	rte_eal_cleanup();
 }
 
+int eal_param_parse(struct EALParams eal, int argc, char **argv) {
+    int counter = 0;
+    // TODO Add check that argc is the same as number of arguments
+    argv[counter] = " ";
+    counter++;
+
+    // Ports to string
+    if (eal.numPorts > 0){
+        argv[counter] = "-a";
+        counter++;
+
+        for (int i = 0; i < eal.numPorts; i++) {
+            argv[counter] = eal.ports[i];
+            counter++;
+        }
+    }
+
+
+    if (eal.numCpus > 0){
+        int firstintsize = countDigits(eal.cpus[0]);
+        char cpustring[firstintsize];
+
+    // CPUs to string
+        for (int i = 0; i < eal.numCpus; i++) {
+            if (i == 0) { // If first digit do not put in leading comma
+                sprintf(cpustring, "%d", eal.cpus[i]);
+            } else { // If NOT first digit put in leading comma
+                int intsize = countDigits(eal.cpus[i]);
+                char cpustringnext[intsize];
+                sprintf(cpustringnext, ",%d", eal.cpus[i]);
+                strcat(cpustring, cpustringnext);
+            }
+            printf("CPU: %d\n", eal.cpus[i]);
+        }
+        printf("Cpustring: %s\n", cpustring);
+        argv[counter] = "-l";
+        counter++;
+        argv[counter] = cpustring;
+        for (int j = 0; j < counter + 1; j++){
+            printf("Argv [%d]: %s\n", j, argv[j]);
+        }
+        counter++;
+    }
+
+
+
+   return 1;
+}
+
+
+
+// Function called by Golang
 extern void DPDK(struct EALParams eal){
-    printf("\nmyNum is: %d\n", eal.myNum[1]);
-    printf("\nmyLetter is: %s\n", eal.myLetter);
-    printf("\nmyString is: %s\n", eal.myString[1]);
-    init();
+    //printf("\nmyNum is: %d\n", eal.myNum[1]);
+    //printf("\nmyLetter is: %s\n", eal.myLetter);
+    //printf("\nmyString is: %s\n", eal.myString[1]);
+    int argc = eal.numArgs;
+    char *argv[argc];
+    eal_param_parse(eal, argc, argv);
+    printf("Testing %s\n",argv[0]);
+    printf("Testing %s\n",argv[1]);
+    //init();
 }
 
 /*

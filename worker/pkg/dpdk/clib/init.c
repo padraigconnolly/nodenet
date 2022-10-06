@@ -20,37 +20,25 @@ int countDigits( int value )
     return result;
 }
 
-extern void init(){
-    int argc = 7;
-    char *argv[7];
+extern void init(int argc, char **argv){
     int ret;
     unsigned lcore_id;
 
-    argv[0] = " ";      // This is where the start command should be
-    argv[1] = "-a";
-    argv[2] = "0000:01:00.0";
-    argv[3] = "-a";
-    argv[4] = "0000:01:00.1";
-    argv[5] = "-l";
-    argv[6] = "2,3";
-
+    for (int j = 0; j < argc; j++){
+            printf("Argv [%d]: %s\n", j, argv[j]);
+        }
     ret = rte_eal_init(argc, argv);
     if (ret < 0)
 		rte_panic("Cannot init EAL\n");
 
     RTE_LCORE_FOREACH_WORKER(lcore_id) {
-		/* Simpler equivalent. 8< */
 		rte_eal_remote_launch(lcore_hello, NULL, lcore_id);
-		/* >8 End of simpler equivalent. */
 	}
 
-    /* call it on main lcore too */
 	lcore_hello(NULL);
-	/* >8 End of launching the function on each lcore. */
 
     rte_eal_mp_wait_lcore();
 
-    /* clean up the EAL */
 	rte_eal_cleanup();
 }
 
@@ -60,21 +48,16 @@ int eal_param_parse(struct EALParams eal, int argc, char **argv) {
     argv[counter] = " ";
     counter++;
 
-    // Ports to string
-    if (eal.numPorts > 0){
+    for (int i = 0; i < eal.numPorts; i++) {
         argv[counter] = "-a";
         counter++;
-
-        for (int i = 0; i < eal.numPorts; i++) {
-            argv[counter] = eal.ports[i];
-            counter++;
-        }
+        argv[counter] = eal.ports[i];
+        counter++;
     }
-
 
     if (eal.numCpus > 0){
         int firstintsize = countDigits(eal.cpus[0]);
-        char cpustring[firstintsize];
+        char* cpustring = malloc(firstintsize);
 
     // CPUs to string
         for (int i = 0; i < eal.numCpus; i++) {
@@ -92,14 +75,8 @@ int eal_param_parse(struct EALParams eal, int argc, char **argv) {
         argv[counter] = "-l";
         counter++;
         argv[counter] = cpustring;
-        for (int j = 0; j < counter + 1; j++){
-            printf("Argv [%d]: %s\n", j, argv[j]);
-        }
         counter++;
     }
-
-
-
    return 1;
 }
 
@@ -113,9 +90,11 @@ extern void DPDK(struct EALParams eal){
     int argc = eal.numArgs;
     char *argv[argc];
     eal_param_parse(eal, argc, argv);
+    printf("Argvss [%d]: %s\n", 6, argv[6]);
     printf("Testing %s\n",argv[0]);
-    printf("Testing %s\n",argv[1]);
-    //init();
+    printf("Testing %s\n",argv[6]);
+    printf("Argvss [%d]: %s\n", 6, argv[6]);
+    init(argc, argv);
 }
 
 /*

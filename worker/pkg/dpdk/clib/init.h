@@ -7,6 +7,7 @@
 #include <rte_per_lcore.h>
 #include <rte_launch.h>
 #include <rte_ethdev.h>
+#include <rte_malloc.h>
 
 struct EALParams {   // Structure declaration
   //int *myNum;           // List of Numbers
